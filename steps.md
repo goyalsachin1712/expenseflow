@@ -310,48 +310,52 @@ not in this playbook's description of what was *supposed* to get built.
 
 ## 12. Push the project to GitHub
 
-> **Draft placeholder:** this is a starting point based on what's generally true
-> about doing this with Claude Code, not a prompt that's been run and verified in
-> this project yet. Replace it once you have your own tested version.
-
 **Why:** none of the previous steps put this project under real version control or
-made it reachable by anyone but you — at this point there are zero commits in this
-repo (`git log` reports "does not have any commits yet"), so nothing is backed up or
-shareable yet. **What it does:** gets the working tree committed and pushed to a new
-GitHub repository, using the `gh` CLI so Claude Code can do it without you leaving
-the terminal.
+made it reachable by anyone but you. **What it does:** gets the working tree
+committed locally and pushed to a new GitHub repository.
 
-**Do this first, before anything else in this step — it's the one part that isn't
-optional:** this project's `.env` currently holds a real Anthropic API key, and there
-is **no `.gitignore` in the repo** (a gap already flagged as Blocking in
-`docs/PRODUCTION-GAP.md`, §7). Without one, a plain `git add .` stages the API key,
-the SQLite database file, and the entire `.venv/` directory. Fix that before staging
-anything:
+**What was actually done in this project** (run directly in the terminal, not via a
+Claude Code prompt):
 
-**Prompt:**
 ```
-Before we push this anywhere, add a .gitignore that excludes .venv/, .env,
-expenseflow.db, __pycache__/, and .pytest_cache/. Then run git status and show me
-exactly what would be staged, so I can confirm nothing sensitive is about to be
-committed.
+git init
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+git add .
+git commit -m "final project"
 ```
 
-Only once you've reviewed that output and confirmed `.env`/`.venv/`/`expenseflow.db`
-are *not* listed, move on to creating the repo and pushing:
+This initialized the repo and created the first commit (`52db0571 final project`).
 
-**Prompt:**
+After that commit, a `.gitignore` was created to exclude the files that shouldn't be
+pushed (API keys, the local venv, the SQLite db, caches, etc.).
+
+With a personal access token generated on GitHub, the next part — creating the new
+remote repository and pushing this project to it — is being done using Claude Code.
+
+> **⚠️ Heads-up flagged during this run, worth fixing before pushing:** the
+> `.gitignore` was added *after* `git add . && git commit` had already run, so that
+> first commit already contains `.env` (with a real Anthropic API key in it) and the
+> entire `.venv/` directory — `.gitignore` only stops *new* changes from being
+> staged, it does nothing to files already committed. Confirm with `git ls-files`
+> before pushing; if `.env` or `.venv/` show up, they need to be removed from history
+> (e.g. `git rm --cached .env` plus a new commit, or rewriting history entirely if
+> the token/secret needs to be treated as burned) — not just added to `.gitignore`
+> — before this repo goes anywhere public or shared.
+
+**Prompt (to create the remote and push, once the history is clean):**
 ```
 Create a new GitHub repository called expenseflow (ask me whether it should be
-public or private before creating it). Initialize git if needed, commit the current
-working tree, and push it to the new repo's main branch. Use the gh CLI if it's
-available, and check with me before actually pushing.
+public or private before creating it). Commit any remaining changes and push the
+working tree to the new repo's main branch. Use the gh CLI if it's available, and
+check with me before actually pushing.
 ```
 
 A few things worth knowing going in:
-- This needs `gh auth login` to have been run once, interactively, outside of Claude
-  Code — it can't complete an OAuth/browser login flow for you. If it isn't
-  authenticated yet, Claude Code will tell you and you'll need to run that yourself
-  (in this environment, prefix it with `!` to run it directly in the session).
+- This needs `gh auth login` (or the generated personal access token) to already be
+  usable — Claude Code can't complete an OAuth/browser login flow for you. In this
+  environment, prefix interactive login commands with `!` to run them directly in
+  the session.
 - Pushing code and creating a repository are both visible, hard-to-undo actions —
   expect (and want) Claude Code to show you what it's about to commit/push and wait
   for a yes before it actually does either, rather than doing it silently.
@@ -362,7 +366,9 @@ A few things worth knowing going in:
 **✏️ To reuse for a different project**, change: the repository name; the list of
 files to `.gitignore` (match it to whatever this project's dependency manager and
 runtime actually generate — a different stack won't have `.venv/`, for instance);
-and public/private depending on whether the project is meant to be shared.
+and public/private depending on whether the project is meant to be shared. If you
+create `.gitignore` *before* your first `git add`/`commit` instead of after, you'll
+avoid the history-cleanup problem flagged above entirely.
 
 ## 13. Save this playbook for the next project
 
