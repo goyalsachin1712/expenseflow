@@ -86,7 +86,7 @@ expenseflow.db SQLite database file, created on first run
 The app reads environment variables via `python-dotenv`. Create a `.env` file in the project root:
 
 ```
-ANTHROPIC_API_KEY=sk-ant-...
+ANTHROPIC_API_KEY=
 ```
 
 - `ANTHROPIC_API_KEY` — required for `GET /reports/insights` (`app/insights.py`). Without it, the endpoint doesn't error — it calls the Anthropic API with an empty key, which fails, and the endpoint returns the fallback string `"Insights are unavailable right now. Please try again later."`
