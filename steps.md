@@ -336,21 +336,10 @@ The changes wer commited again using last 3 commands mentioned above.
 With a personal access token generated on GitHub, the next part — creating the new
 remote repository and pushing this project to it — is being done using Claude Code.
 
-> **⚠️ Heads-up flagged during this run, worth fixing before pushing:** the
-> `.gitignore` was added *after* `git add . && git commit` had already run, so that
-> first commit already contains `.env` (with a real Anthropic API key in it) and the
-> entire `.venv/` directory — `.gitignore` only stops *new* changes from being
-> staged, it does nothing to files already committed. Confirm with `git ls-files`
-> before pushing; if `.env` or `.venv/` show up, they need to be removed from history
-> (e.g. `git rm --cached .env` plus a new commit, or rewriting history entirely if
-> the token/secret needs to be treated as burned) — not just added to `.gitignore`
-> — before this repo goes anywhere public or shared.
-
 **Prompt (to create the remote and push, once the history is clean):**
 ```
 Create a new GitHub repository called expenseflow (ask me whether it should be
-public or private before creating it). Commit any remaining changes and push the
-working tree to the new repo's main branch. Use the gh CLI if it's available, and
+public or private before creating it). My account username is "hkshitesh@gmail.com"  and my token is "your token". Commit any remaining changes and push the working tree to the new repo's main branch. Use the gh CLI if it's available, and
 check with me before actually pushing.
 ```
 
