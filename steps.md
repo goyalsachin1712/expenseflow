@@ -323,12 +323,15 @@ git config --global user.name "Your Name"
 git config --global user.email "your.email@example.com"
 git add .
 git commit -m "final project"
+git log
 ```
 
 This initialized the repo and created the first commit (`52db0571 final project`).
 
 After that commit, a `.gitignore` was created to exclude the files that shouldn't be
 pushed (API keys, the local venv, the SQLite db, caches, etc.).
+
+The changes wer commited again using last 3 commands mentioned above.
 
 With a personal access token generated on GitHub, the next part — creating the new
 remote repository and pushing this project to it — is being done using Claude Code.
