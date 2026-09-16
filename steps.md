@@ -394,3 +394,7 @@ which is more useful than hand-editing this file in advance and hoping it holds.
   process. A process that starts cleanly can still render a blank page.
 - **When something looks wrong, describe symptom → expected vs. actual** and let
   Claude Code find the root cause, rather than prescribing the fix yourself.
+
+  In the .env file, keep below details mentioned for dynamic info:
+  ANTHROPIC_API_KEY=""
+GH_TOKEN=""
